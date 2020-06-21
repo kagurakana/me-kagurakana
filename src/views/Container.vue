@@ -58,38 +58,13 @@
 
         <transition enter-active-class="animated slideInUp">
           <div v-show="work.contentShow" class="work-wrapper dis-f justify-around">
-            <a
-              v-for="(item, index) in workset"
-              class="work-link"
-              :href="item.link"
-              :key="index"
-              target="_blank"
-            >
-              <div class="work-card dis-f flex-col">
-                <div class="img-wrapper">
-                  <div
-                    class="work-img"
-                    :style="{
-                   background:`url('${item.img}') center/cover no-repeat`,
-                   width:'300px',
-                   height:'350px'
-                   }"
-                  ></div>
-                  <div class="fade-text">{{item.desc}}</div>
-                </div>
-
-                <h1 class="dis-f flex-1 align-center justify-center">{{item.title}}</h1>
-              </div>
-            </a>
+            <Card v-for="(item, index) in showWorkSet" :key="index" :item="item"></Card>
           </div>
         </transition>
       </div>
     </div>
     <div class="section">
-      <div class="slide">Slide 1</div>
-      <div class="slide">Slide 2</div>
-      <div class="slide">Slide 3</div>
-      <div class="slide">Slide 4</div>
+      
     </div>
     <div class="section">Some section</div>
     <div class="section">Some section</div>
@@ -97,10 +72,26 @@
 </template>
 
 <script>
+import Card from "/src/components/Card.vue";
 export default {
   name: "HelloWorld",
   props: {
     msg: String
+  },
+  components: {
+    Card
+  },
+  created() {
+    $.ajax({
+      method:"GET",
+      url:"https://www.kagurakana.xyz/api/out/bangumi?pn=1&sn=15&type=1&follow_status=0&vmid=14076737"
+    }).done((data)=>{
+      console.log(data)
+    })
+    this.C_WIDTH = document.body.offsetWidth;
+    window.onresize = () => {
+      this.C_WIDTH = document.body.offsetWidth;
+    };
   },
   mounted() {
     new fullpage("#fullpage", {
@@ -175,6 +166,7 @@ export default {
   },
   data() {
     return {
+      C_WIDTH: 0,
       me: {
         titleShow: false,
         leftShow: false,
@@ -206,47 +198,20 @@ export default {
         }
       ]
     };
+  },
+  computed: {
+    showWorkSet() {
+      let ret = this.workset;
+      if (this.C_WIDTH >= 600 && this.C_WIDTH < 1200)
+        ret = this.workset.slice(1);
+      if (this.C_WIDTH < 600) ret = this.workset.slice(2);
+      return ret;
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-a {
-  color: #000;
-  text-decoration: none;
-  &:active {
-    color: #000;
-  }
-}
-.dis-n {
-  display: none !important;
-}
-.dis-f {
-  display: flex;
-}
-.flex-col {
-  flex-direction: column;
-}
-.flex-1 {
-  flex: 1;
-}
-.justify-center {
-  justify-content: center;
-}
-.justify-around {
-  justify-content: space-around;
-}
-.justify-between {
-  justify-content: space-between;
-}
-.align-center {
-  align-items: center;
-}
 #fullpage {
   font-family: source-han-serif-sc, serif !important;
   font-style: normal;
@@ -331,63 +296,15 @@ a {
       background-color: #000;
     }
   }
-  .work-card {
-    height: 100%;
+}
+@media (max-width: 950px) {
+  .me-title {
+    font-size: 56px !important;
   }
-  .work-link {
-    height: 430px;
-    background-color: #ffffff;
-    color: #222222;
-    border-radius: 4px;
-    overflow: hidden;
-    box-shadow: 0 0 30px 5px rgba(0, 0, 0, 0.3);
-    transition: all 0.5s ease;
-    position: relative;
-    top: 0;
-    .img-wrapper {
-      width: 300px;
-      height: 350px;
-      overflow: hidden;
-      position: relative;
-    }
-    .work-img {
-      transition: all 0.5s ease;
-      position: relative;
-    }
-    .fade-text {
-      content: "";
-      z-index: 5;
-      vertical-align: middle;
-      color: #ffffff;
-      font-size: 22px;
-      position: absolute;
-      transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
-      background-color: rgba(22, 22, 22, 0);
-      left: 0;
-      top: -100%;
-      height: 100%;
-      width: 100%;
-    }
-    &:hover {
-      transition: all 0.5s ease;
-      .work-img {
-        transition: all 0.5s ease;
-
-        transform: scale(1.1);
-      }
-      .fade-text {
-        position: absolute;
-        transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
-        background-color: rgba(22, 22, 22, 0.7);
-        left: 0;
-
-        top: 0;
-        height: 100%;
-        width: 300px;
-      }
-      top: -15px;
-      box-shadow: 0 0 30px 15px rgba(0, 0, 0, 0.3);
-    }
+}
+@media (max-width: 600px) {
+  .me-title {
+    font-size: 46px !important;
   }
 }
 </style>

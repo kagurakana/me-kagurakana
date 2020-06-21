@@ -1,2 +1,2 @@
-npm i
-npm run build
+sudo npm install --unsafe-perm
+sudo npm run build --unsafe-perm 

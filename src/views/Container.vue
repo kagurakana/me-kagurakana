@@ -234,9 +234,9 @@ export default {
                 let resizeEvent = document.createEvent("UIEvent");
                 resizeEvent.initEvent("resize");
                 window.dispatchEvent(resizeEvent);
-                // loadEvent.initEvent("load");
-                // let loadEvent = document.createEvent("event");
-                // window.dispatchEvent(loadEvent);
+                let loadEvent = document.createEvent("event");
+                loadEvent.initEvent("load");
+                window.dispatchEvent(loadEvent);
               });
             });
         }
@@ -314,9 +314,9 @@ export default {
           let resizeEvent = document.createEvent("UIEvent");
           resizeEvent.initEvent("resize");
           window.dispatchEvent(resizeEvent);
-          // loadEvent.initEvent("load");
-          // let loadEvent = document.createEvent("event");
-          // window.dispatchEvent(loadEvent);
+          let loadEvent = document.createEvent("event");
+          loadEvent.initEvent("load");
+          window.dispatchEvent(loadEvent);
         }, 100);
         console.log(this.bangumiset[0]);
       });

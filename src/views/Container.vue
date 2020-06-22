@@ -133,7 +133,7 @@ export default {
       }, 100);
     });
 
-    this.getBangumi(this.bangumiPage++);
+    // this.getBangumi(this.bangumiPage++);
     this.C_WIDTH = document.body.offsetWidth;
     window.onresize = () => {
       this.C_WIDTH = document.body.offsetWidth;
@@ -228,6 +228,9 @@ export default {
               });
             });
         }
+      },
+      afterRender(){
+        this.getBangumi(page++)
       }
     });
   },

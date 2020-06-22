@@ -5,7 +5,10 @@
     <div class="section active text-center me">
       <div class="me-title">
         <div class="me-title">
-          <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
+          <transition
+            enter-active-class="animated fadeIn"
+            leave-active-class="animated fadeOut"
+          >
             <div v-show="me.titleShow">Hi，我是刘嘉康。</div>
           </transition>
 
@@ -14,7 +17,10 @@
               enter-active-class="animated fadeInUp"
               leave-active-class="animated fadeOutDown"
             >
-              <div class="dis-f justify-around btn-wrapper" v-show="me.buttonsShow">
+              <div
+                class="dis-f justify-around btn-wrapper"
+                v-show="me.buttonsShow"
+              >
                 <a href="https://github.com/kagurakana" target="_blank">
                   <div class="me-btn">
                     <i class="iconfont icon-github"></i>
@@ -59,22 +65,32 @@
         </transition>
 
         <transition enter-active-class="animated slideInUp">
-          <div v-show="work.contentShow" class="work-wrapper dis-f justify-around">
-            <Card v-for="(item, index) in showWorkSet" :key="index" :item="item"></Card>
+          <div
+            v-show="work.contentShow"
+            class="work-wrapper dis-f justify-around"
+          >
+            <Card
+              v-for="(item, index) in showWorkSet"
+              :key="index"
+              :item="item"
+            ></Card>
           </div>
         </transition>
       </div>
     </div>
     <!-- BANGUMI -->
     <div class="section bangumi">
-      <div class="dis-f flex-col bangumi-container fill-height justify-between align-center">
-        <transition
-        enter-active-class="animated slideInDown"
-        >
+      <div
+        class="dis-f flex-col bangumi-container fill-height justify-between align-center"
+      >
+        <transition enter-active-class="animated slideInDown">
           <h1 v-show="bangumi.titleShow" class="bangumi-title">追番列表。</h1>
         </transition>
         <transition enter-active-class="animated slideInUp">
-          <div v-show="bangumi.contentShow" class="bangumi-wrapper dis-f f-wrap justify-around">
+          <div
+            v-show="bangumi.contentShow"
+            class="bangumi-wrapper dis-f f-wrap justify-around"
+          >
             <Card
               width="300px"
               hight="430px"
@@ -84,23 +100,28 @@
             ></Card>
           </div>
         </transition>
-        <button
-          v-show="bangumi.buttonShow"
-          @click="getBangumi(bangumiPage++)"
-        >加载更多[一共{{bangumiCount}}个]</button>
+        <button v-show="bangumi.buttonShow" @click="getBangumi(bangumiPage++)">
+          加载更多[一共{{ bangumiCount }}个]
+        </button>
       </div>
     </div>
     <!-- STEAM -->
     <div class="section game text-center">
       <div class="bangumi-title-line"></div>
-      <div class="game-wrapper dis-f f-wrap justify-center">
-        <Card
-          v-for="(item, index) in gameset"
-          height="200px"
-          :item="item"
-          :key="index"
-          width="350px"
-        ></Card>
+      <div class="dis-f flex-col align-center justify-between">
+        <h1>我正在玩。</h1>
+        <div class="game-wrapper dis-f f-wrap justify-center">
+          <Card
+            v-for="(item, index) in gameset"
+            height="200px"
+            :item="item"
+            :key="index"
+            width="350px"
+          ></Card>
+        </div>
+        <button @click="loadMoreGame(gamePage++)">
+          加载更多
+        </button>
       </div>
     </div>
     <div class="section">Some section</div>
@@ -112,25 +133,27 @@ import Card from "/src/components/Card.vue";
 export default {
   name: "HelloWorld",
   props: {
-    msg: String
+    msg: String,
   },
   components: {
-    Card
+    Card,
   },
   created() {
     $.ajax({
       method: "GET",
       url:
-        "https://bird.ioliu.cn/v1?url=https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=93D0C129F98018D2DBB494BEBAB4AC5F&steamid=76561198267937561&include_appinfo=1"
-    }).done(data => {
+        "https://bird.ioliu.cn/v1?url=https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=93D0C129F98018D2DBB494BEBAB4AC5F&steamid=76561198267937561&include_appinfo=1",
+    }).done((data) => {
+      let all = data.response.games;
       let games = data.response.games.slice(0, 10);
-      games.forEach(game => {
-        this.gameset.push({
+      all.forEach((game) => {
+        this.gamesetAll.push({
           title: game.name,
           img: `http://media.steampowered.com/steamcommunity/public/images/apps/${game.appid}/${game.img_logo_url}.jpg`,
-          desc: game.name
+          desc: game.name,
         });
       });
+      this.gameset = this.gamesetAll.slice(0, 10);
       // 手动触发resize事件。
       this.getBangumi(this.bangumiPage++);
       setTimeout(() => {
@@ -159,7 +182,7 @@ export default {
       scrollOverflowOptions: {
         useTransform: true,
         useTransition: true,
-        mouseWheel: true
+        mouseWheel: true,
       },
       afterLoad: (before, after) => {
         if (after.anchor === "me") {
@@ -179,7 +202,7 @@ export default {
               $(".me-title-line").css({
                 left: "0",
                 width: "100%",
-                transition: "all 1s ease-in-out"
+                transition: "all 1s ease-in-out",
               });
               return new Promise((resolve, reject) => {
                 setTimeout(() => {
@@ -210,7 +233,7 @@ export default {
               $(".work-title-line").css({
                 left: "0",
                 width: "100%",
-                transition: "all 1s ease-in-out"
+                transition: "all 1s ease-in-out",
               });
             });
         }
@@ -222,7 +245,6 @@ export default {
           })
             .then(() => {
               this.bangumi.contentShow = true;
-
               return new Promise((resolve, reject) => {
                 setTimeout(() => {
                   resolve();
@@ -234,7 +256,7 @@ export default {
               $(".bangumi-title-line").css({
                 left: "0",
                 width: "100%",
-                transition: "all 1s ease-in-out"
+                transition: "all 1s ease-in-out",
               });
               return new Promise((resolve, reject) => {
                 setTimeout(() => {
@@ -242,16 +264,12 @@ export default {
                 }, 1100);
               }).then(() => {
                 this.bangumi.buttonShow = true;
-                let resizeEvent = document.createEvent("UIEvent");
-                resizeEvent.initEvent("resize");
-                window.dispatchEvent(resizeEvent);
-                let loadEvent = document.createEvent("event");
-                loadEvent.initEvent("load");
-                window.dispatchEvent(loadEvent);
+                //TODO
+                this.calcSize();
               });
             });
         }
-      }
+      },
     });
   },
   data() {
@@ -260,42 +278,44 @@ export default {
       me: {
         titleShow: false,
         leftShow: false,
-        buttonsShow: false
+        buttonsShow: false,
       },
       work: {
         titleShow: false,
-        contentShow: false
+        contentShow: false,
       },
       bangumi: {
         titleShow: false,
         contentShow: false,
-        buttonShow: false
+        buttonShow: false,
       },
       workset: [
         {
           title: "MUXI地板",
           img: "https://cdn.kagurakana.xyz/QQ截图20200621172534.png",
           link: "https://kagurakana.gitee.io/h5/muxi/index.html",
-          desc: "使用bootstacp响应式布局，根据屏幕尺寸不同提供不同的layout。"
+          desc: "使用bootstacp响应式布局，根据屏幕尺寸不同提供不同的layout。",
         },
         {
           title: "家居医生",
           img: "https://cdn.kagurakana.xyz/QQ截图20200621175806.png",
           link: "https://kagurakana.gitee.io/h5/iframe/index.html",
-          desc: "使用iframe标签，多页面开发，点击标签切换不同的页面。"
+          desc: "使用iframe标签，多页面开发，点击标签切换不同的页面。",
         },
         {
           title: "小米商城",
           img: "https://cdn.kagurakana.xyz/QQ截图20200621175930.png",
           link: "https://kagurakana.gitee.io/h5/xiaomisite/index.html",
           desc:
-            "使用grid和flex布局，开发滚动轮播图，边框线设置为1px，还原小米官网。"
-        }
+            "使用grid和flex布局，开发滚动轮播图，边框线设置为1px，还原小米官网。",
+        },
       ],
+      gamesetAll: [],
       gameset: [],
+      gamePage: 1,
       bangumiset: [],
       bangumiPage: 1,
-      bangumiCount: 0
+      bangumiCount: 0,
     };
   },
   computed: {
@@ -305,23 +325,23 @@ export default {
         ret = this.workset.slice(1);
       if (this.C_WIDTH < 600) ret = this.workset.slice(2);
       return ret;
-    }
+    },
   },
   methods: {
     getBangumi(page) {
       $.ajax({
         method: "GET",
-        url: `https://www.kagurakana.xyz/api/out/bangumi?pn=${page}&sn=15&type=1&follow_status=0&vmid=14076737`
-      }).done(data => {
+        url: `https://www.kagurakana.xyz/api/out/bangumi?pn=${page}&sn=15&type=1&follow_status=0&vmid=14076737`,
+      }).done((data) => {
         console.log(data);
-        this.bangumiCount = data.total;
+        this.bangumiCount = data.data.total;
         let bangumiList = data.data.list;
-        bangumiList.forEach(bangumi => {
+        bangumiList.forEach((bangumi) => {
           let link = bangumi.cover.match(/http:\/\/(.*)/)[1];
           this.bangumiset.push({
             title: bangumi.title,
             img: `https://www.kagurakana.xyz/api/out/${link}`,
-            desc: bangumi.evaluate
+            desc: bangumi.evaluate,
           });
         });
         setTimeout(() => {
@@ -334,12 +354,25 @@ export default {
         }, 100);
         console.log(this.bangumiset[0]);
       });
-    }
-  }
+    },
+    loadMoreGame(page) {
+      this.gameset.push(...this.gamesetAll.slice(page * 10, (page + 1) * 10));
+      this.calcSize();
+    },
+    calcSize() {
+      let resizeEvent = document.createEvent("UIEvent");
+      resizeEvent.initEvent("resize");
+      window.dispatchEvent(resizeEvent);
+      let loadEvent = document.createEvent("event");
+      loadEvent.initEvent("load");
+      window.dispatchEvent(loadEvent);
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+@import "../assets/css/mixin.scss";
 #fullpage {
   font-family: source-han-serif-sc, serif !important;
   font-style: normal;
@@ -432,6 +465,15 @@ export default {
 }
 .section.game {
   background-image: linear-gradient(#2a475e, #1b2838);
+  h1 {
+    color: #f0ebf3;
+  }
+  button {
+    @include btn-transparent;
+  }
+  .game-wrapper {
+    min-height: 80vh;
+  }
 }
 .section.bangumi {
   position: relative;
@@ -472,4 +514,3 @@ export default {
   }
 }
 </style>
-

@@ -1,0 +1,19 @@
+@mixin btn-transparent {
+  margin: 50px;
+  outline: none;
+  cursor: pointer;
+  background-color: transparent;
+  border: 2px solid #efefef;
+  color: #efefef;
+  padding: 12px 15px;
+  transition: all 0.2s ease;
+  &:hover {
+    background-color: #567c8d;
+    transition: all 0.5s ease;
+    transform: translate(0, -2px);
+  }
+  &:active {
+    transition: all 0.2s ease;
+    transform: translate(0, 2px);
+  }
+}

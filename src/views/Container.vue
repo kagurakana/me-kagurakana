@@ -125,7 +125,7 @@ export default {
         });
       });
       // 手动触发resize事件。
-
+      this.getBangumi(this.page++);
       setTimeout(() => {
         let resizeEvent = document.createEvent("UIEvent");
         resizeEvent.initEvent("resize");
@@ -228,9 +228,6 @@ export default {
               });
             });
         }
-      },
-      afterRender(){
-        this.getBangumi(page++)
       }
     });
   },
@@ -303,7 +300,10 @@ export default {
         });
         setTimeout(() => {
           let resizeEvent = document.createEvent("UIEvent");
+          let loadEvent = document.createEvent("event");
+          loadEvent.initEvent("load");
           resizeEvent.initEvent("resize");
+          window.dispatchEvent(loadEvent);
           window.dispatchEvent(resizeEvent);
         }, 100);
         console.log(this.bangumiset[0]);
@@ -416,6 +416,7 @@ export default {
     min-height: 80vh;
   }
   button {
+    margin: 50px;
     outline: none;
     cursor: pointer;
     background-color: transparent;

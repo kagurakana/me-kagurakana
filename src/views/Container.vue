@@ -226,6 +226,18 @@ export default {
                 width: "100%",
                 transition: "all 1s ease-in-out"
               });
+              return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  resolve();
+                }, 100);
+              }).then(() => {
+                let resizeEvent = document.createEvent("UIEvent");
+                resizeEvent.initEvent("resize");
+                window.dispatchEvent(resizeEvent);
+                // loadEvent.initEvent("load");
+                // let loadEvent = document.createEvent("event");
+                // window.dispatchEvent(loadEvent);
+              });
             });
         }
       }
@@ -300,11 +312,11 @@ export default {
         });
         setTimeout(() => {
           let resizeEvent = document.createEvent("UIEvent");
-          let loadEvent = document.createEvent("event");
-          loadEvent.initEvent("load");
           resizeEvent.initEvent("resize");
-          window.dispatchEvent(loadEvent);
           window.dispatchEvent(resizeEvent);
+          // loadEvent.initEvent("load");
+          // let loadEvent = document.createEvent("event");
+          // window.dispatchEvent(loadEvent);
         }, 100);
         console.log(this.bangumiset[0]);
       });

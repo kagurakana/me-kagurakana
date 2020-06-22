@@ -65,7 +65,7 @@
     </div>
     <div class="section bangumi">
       <transition enter-active-class="animated slideInUp">
-        <div v-show="bangumi.contentShow" class="bangumi-wrapper dis-f justify-around">
+        <div v-show="bangumi.contentShow" class="bangumi-wrapper dis-f f-wrap  justify-around">
           <Card v-for="(item, index) in bangumiset" :key="index" :item="item"></Card>
         </div>
       </transition>

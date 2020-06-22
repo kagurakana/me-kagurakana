@@ -5,7 +5,7 @@
       <div class="me-title">
         <div class="me-title">
           <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
-            <div v-show="me.titleShow">Hi，我是刘嘉康。</div>
+            <div v-show="me.titleShow">Hi，我不是刘嘉康。</div>
           </transition>
 
           <div class="me-title-line">

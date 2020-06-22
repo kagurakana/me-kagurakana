@@ -14,7 +14,7 @@ a {
 .dis-n {
   display: none !important;
 }
-.dis-f {
+.dis-f { 
   display: flex;
 }
 .flex-col {

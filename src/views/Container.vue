@@ -125,7 +125,7 @@ export default {
         });
       });
       // 手动触发resize事件。
-      this.getBangumi(this.page++);
+      this.getBangumi(this.bangumiPage++);
       setTimeout(() => {
         let resizeEvent = document.createEvent("UIEvent");
         resizeEvent.initEvent("resize");

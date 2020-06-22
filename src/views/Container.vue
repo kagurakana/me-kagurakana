@@ -1,6 +1,7 @@
 <template>
   <div id="fullpage">
     <div id="menu"></div>
+    <!-- ME -->
     <div class="section active text-center me">
       <div class="me-title">
         <div class="me-title">
@@ -47,6 +48,7 @@
         <div></div>
       </div>
     </div>
+    <!-- WORK -->
     <div class="section text-center work">
       <div class="work-container">
         <transition enter-active-class="animated slideInDown">
@@ -63,21 +65,27 @@
         </transition>
       </div>
     </div>
+    <!-- BANGUMI -->
     <div class="section bangumi">
-      <transition enter-active-class="animated slideInUp">
-        <div v-show="bangumi.contentShow" class="bangumi-wrapper dis-f f-wrap justify-around">
-          <Card
-            width="300px"
-            hight="430px"
-            v-for="(item, index) in bangumiset"
-            :key="index"
-            :item="item"
-          ></Card>
-        </div>
-      </transition>
-      <button @click="getBangumi(bangumiPage++)">加载更多</button>
+      <div class="dis-f flex-col align-center">
+        <h1 v-show="bangumi.titleShow" class="bangumi-title">追番列表。</h1>
+        <transition enter-active-class="animated slideInUp">
+          <div v-show="bangumi.contentShow" class="bangumi-wrapper dis-f f-wrap justify-around">
+            <Card
+              width="300px"
+              hight="430px"
+              v-for="(item, index) in bangumiset"
+              :key="index"
+              :item="item"
+            ></Card>
+          </div>
+        </transition>
+        <button @click="getBangumi(bangumiPage++)">加载更多</button>
+      </div>
     </div>
+    <!-- STEAM -->
     <div class="section game text-center">
+      <div class="bangumi-title-line"></div>
       <div class="game-wrapper dis-f f-wrap justify-center">
         <Card
           v-for="(item, index) in gameset"
@@ -115,6 +123,12 @@ export default {
           img: `http://media.steampowered.com/steamcommunity/public/images/apps/${game.appid}/${game.img_logo_url}.jpg`,
           desc: game.name
         });
+      });
+      // 手动触发resize事件。
+      this.$nextTick(() => {
+        let resizeEvent = document.createEvent("UIEvent");
+        resizeEvent.initEvent("resize");
+        window.dispatchEvent(resizeEvent);
       });
     });
 
@@ -186,15 +200,30 @@ export default {
                 width: "100%",
                 transition: "all 1s ease-in-out"
               });
-              return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  resolve();
-                }, 1000);
-              });
             });
         }
         if (after.anchor === "bangumi") {
-          this.bangumi.contentShow = true;
+          new Promise((resolve, reject) => {
+            setTimeout(() => {
+              resolve();
+            }, 500);
+          })
+            .then(() => {
+              this.bangumi.titleShow = true;
+              return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  resolve();
+                }, 500);
+              });
+            })
+            .then(() => {
+              this.bangumi.contentShow = true;
+              $(".bangumi-title-line").css({
+                left: "0",
+                width: "100%",
+                transition: "all 1s ease-in-out"
+              });
+            });
         }
       }
     });
@@ -212,6 +241,7 @@ export default {
         contentShow: false
       },
       bangumi: {
+        titleShow: false,
         contentShow: false
       },
       workset: [
@@ -368,6 +398,9 @@ export default {
 }
 .section.bangumi {
   position: relative;
+  .bangumi-wrapper{
+    min-height: 80vh;
+  }
   button {
     outline: none;
     cursor: pointer;
@@ -375,19 +408,15 @@ export default {
     border: 2px solid #efefef;
     color: #efefef;
     padding: 12px 15px;
-    position: absolute;
-    left: 50%;
-    bottom: 35px;
-    transform: translateX(-50%);
     transition: all 0.2s ease;
-    &:hover{
+    &:hover {
       background-color: #567c8d;
       transition: all 0.5s ease;
-      transform: translate(-50%,-2px);
+      transform: translate(0, -2px);
     }
     &:active {
       transition: all 0.2s ease;
-      transform: translate(-50%, 2px);
+      transform: translate(0, 2px);
     }
   }
 }

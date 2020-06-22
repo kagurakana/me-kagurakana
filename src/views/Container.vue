@@ -63,10 +63,24 @@
         </transition>
       </div>
     </div>
-    <div class="section">
-      
+    <div class="section bangumi">
+      <transition enter-active-class="animated slideInUp">
+        <div v-show="bangumi.contentShow" class="bangumi-wrapper dis-f justify-around">
+          <Card v-for="(item, index) in bangumiset" :key="index" :item="item"></Card>
+        </div>
+      </transition>
     </div>
-    <div class="section">Some section</div>
+    <div class="section game text-center">
+      <div class="game-wrapper dis-f f-wrap justify-center">
+        <Card
+          v-for="(item, index) in gameset"
+          height="200px"
+          :item="item"
+          :key="index"
+          width="350px"
+        ></Card>
+      </div>
+    </div>
     <div class="section">Some section</div>
   </div>
 </template>
@@ -83,11 +97,21 @@ export default {
   },
   created() {
     $.ajax({
-      method:"GET",
-      url:"https://www.kagurakana.xyz/api/out/bangumi?pn=1&sn=15&type=1&follow_status=0&vmid=14076737"
-    }).done((data)=>{
-      console.log(data)
-    })
+      method: "GET",
+      url:
+        "https://bird.ioliu.cn/v1?url=https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=93D0C129F98018D2DBB494BEBAB4AC5F&steamid=76561198267937561&include_appinfo=1"
+    }).done(data => {
+      let games = data.response.games.slice(0, 10);
+      games.forEach(game => {
+        this.gameset.push({
+          title: game.name,
+          img: `http://media.steampowered.com/steamcommunity/public/images/apps/${game.appid}/${game.img_logo_url}.jpg`,
+          desc: game.name
+        });
+      });
+    });
+
+    this.getBangumi(this.bangumiPage++);
     this.C_WIDTH = document.body.offsetWidth;
     window.onresize = () => {
       this.C_WIDTH = document.body.offsetWidth;
@@ -100,9 +124,10 @@ export default {
       loopBottom: true,
       controlArrows: true,
       menu: "#menu", //绑定菜单，设定的相关属性与anchors的值对应后，菜单可以控制滚动，默认为false。
-      anchors: ["me", "work", "hobby", "game", "blog"], //anchors定义锚链接，默认为[]
+      anchors: ["me", "work", "bangumi", "game", "blog"], //anchors定义锚链接，默认为[]
       sectionsColor: ["#f2f2f2", "#E3F2FD", "#7BAABE", "whitesmoke", "#ccddff"],
       fixedElements: "",
+      scrollOverflow: true,
       afterLoad: (before, after) => {
         if (after.anchor === "me") {
           new Promise((resolve, reject) => {
@@ -161,6 +186,9 @@ export default {
               });
             });
         }
+        if (after.anchor === "bangumi") {
+          this.bangumi.contentShow = true;
+        }
       }
     });
   },
@@ -174,6 +202,9 @@ export default {
       },
       work: {
         titleShow: false,
+        contentShow: false
+      },
+      bangumi: {
         contentShow: false
       },
       workset: [
@@ -196,7 +227,10 @@ export default {
           desc:
             "使用grid和flex布局，开发滚动轮播图，边框线设置为1px，还原小米官网。"
         }
-      ]
+      ],
+      gameset: [],
+      bangumiset: [],
+      bangumiPage: 1
     };
   },
   computed: {
@@ -206,6 +240,26 @@ export default {
         ret = this.workset.slice(1);
       if (this.C_WIDTH < 600) ret = this.workset.slice(2);
       return ret;
+    }
+  },
+  methods: {
+    getBangumi(page) {
+      $.ajax({
+        method: "GET",
+        url: `https://www.kagurakana.xyz/api/out/bangumi?pn=${page}&sn=15&type=1&follow_status=0&vmid=14076737`
+      }).done(data => {
+        console.log(data);
+        let bangumiList = data.data.list;
+        bangumiList.forEach(bangumi => {
+          let link = bangumi.cover.match(/http:\/\/(.*)/)[1];
+          this.bangumiset.push({
+            title: bangumi.title,
+            img: `https://www.kagurakana.xyz/api/out/${link}`,
+            desc: bangumi.evaluate
+          });
+        });
+        console.log(this.bangumiset[0]);
+      });
     }
   }
 };
@@ -296,6 +350,13 @@ export default {
       background-color: #000;
     }
   }
+}
+.section.work {
+  background-color: #f5e2e1;
+  background-image: linear-gradient(19deg, #f5e2e1 0%, #dad7e6 100%);
+}
+.section.game {
+  background-image: linear-gradient(#2a475e, #1b2838);
 }
 @media (max-width: 950px) {
   .me-title {

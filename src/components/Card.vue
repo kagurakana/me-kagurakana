@@ -14,7 +14,7 @@
         </div>
       </div>
       <h1 class="dis-f flex-1 align-center justify-center nowrap">
-        <div>{{item.title}}</div>
+        <div class="nowrap">{{item.title}}</div>
       </h1>
     </div>
   </a>

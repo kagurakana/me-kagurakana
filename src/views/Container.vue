@@ -68,7 +68,11 @@
     <!-- BANGUMI -->
     <div class="section bangumi">
       <div class="dis-f flex-col bangumi-container fill-height justify-between align-center">
-        <h1 v-show="bangumi.titleShow" class="bangumi-title">追番列表。</h1>
+        <transition
+        enter-active-class="animated slideInDown"
+        >
+          <h1 v-show="bangumi.titleShow" class="bangumi-title">追番列表。</h1>
+        </transition>
         <transition enter-active-class="animated slideInUp">
           <div v-show="bangumi.contentShow" class="bangumi-wrapper dis-f f-wrap justify-around">
             <Card
@@ -80,7 +84,10 @@
             ></Card>
           </div>
         </transition>
-        <button @click="getBangumi(bangumiPage++)">加载更多</button>
+        <button
+          v-show="bangumi.buttonShow"
+          @click="getBangumi(bangumiPage++)"
+        >加载更多[一共{{bangumiCount}}个]</button>
       </div>
     </div>
     <!-- STEAM -->
@@ -143,14 +150,17 @@ export default {
     new fullpage("#fullpage", {
       navigation: true,
       navigationPosition: "right",
-      loopBottom: true,
-      controlArrows: true,
       menu: "#menu", //绑定菜单，设定的相关属性与anchors的值对应后，菜单可以控制滚动，默认为false。
       anchors: ["me", "work", "bangumi", "game", "blog"], //anchors定义锚链接，默认为[]
       sectionsColor: ["#f2f2f2", "#E3F2FD", "#7BAABE", "whitesmoke", "#ccddff"],
       fixedElements: "",
       scrollOverflow: true,
       useTransform: true,
+      scrollOverflowOptions: {
+        useTransform: true,
+        useTransition: true,
+        mouseWheel: true
+      },
       afterLoad: (before, after) => {
         if (after.anchor === "me") {
           new Promise((resolve, reject) => {
@@ -229,8 +239,9 @@ export default {
               return new Promise((resolve, reject) => {
                 setTimeout(() => {
                   resolve();
-                }, 100);
+                }, 1100);
               }).then(() => {
+                this.bangumi.buttonShow = true;
                 let resizeEvent = document.createEvent("UIEvent");
                 resizeEvent.initEvent("resize");
                 window.dispatchEvent(resizeEvent);
@@ -257,7 +268,8 @@ export default {
       },
       bangumi: {
         titleShow: false,
-        contentShow: false
+        contentShow: false,
+        buttonShow: false
       },
       workset: [
         {
@@ -282,7 +294,8 @@ export default {
       ],
       gameset: [],
       bangumiset: [],
-      bangumiPage: 1
+      bangumiPage: 1,
+      bangumiCount: 0
     };
   },
   computed: {
@@ -301,6 +314,7 @@ export default {
         url: `https://www.kagurakana.xyz/api/out/bangumi?pn=${page}&sn=15&type=1&follow_status=0&vmid=14076737`
       }).done(data => {
         console.log(data);
+        this.bangumiCount = data.total;
         let bangumiList = data.data.list;
         bangumiList.forEach(bangumi => {
           let link = bangumi.cover.match(/http:\/\/(.*)/)[1];

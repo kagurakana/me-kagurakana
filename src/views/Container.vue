@@ -65,10 +65,17 @@
     </div>
     <div class="section bangumi">
       <transition enter-active-class="animated slideInUp">
-        <div v-show="bangumi.contentShow" class="bangumi-wrapper dis-f f-wrap  justify-around">
-          <Card v-for="(item, index) in bangumiset" :key="index" :item="item"></Card>
+        <div v-show="bangumi.contentShow" class="bangumi-wrapper dis-f f-wrap justify-around">
+          <Card
+            width="300px"
+            hight="430px"
+            v-for="(item, index) in bangumiset"
+            :key="index"
+            :item="item"
+          ></Card>
         </div>
       </transition>
+      <button @click="getBangumi(bangumiPage++)">加载更多</button>
     </div>
     <div class="section game text-center">
       <div class="game-wrapper dis-f f-wrap justify-center">
@@ -351,12 +358,38 @@ export default {
     }
   }
 }
+
 .section.work {
   background-color: #f5e2e1;
   background-image: linear-gradient(19deg, #f5e2e1 0%, #dad7e6 100%);
 }
 .section.game {
   background-image: linear-gradient(#2a475e, #1b2838);
+}
+.section.bangumi {
+  position: relative;
+  button {
+    outline: none;
+    cursor: pointer;
+    background-color: transparent;
+    border: 2px solid #efefef;
+    color: #efefef;
+    padding: 12px 15px;
+    position: absolute;
+    left: 50%;
+    bottom: 35px;
+    transform: translateX(-50%);
+    transition: all 0.2s ease;
+    &:hover{
+      background-color: #567c8d;
+      transition: all 0.5s ease;
+      transform: translate(-50%,-2px);
+    }
+    &:active {
+      transition: all 0.2s ease;
+      transform: translate(-50%, 2px);
+    }
+  }
 }
 @media (max-width: 950px) {
   .me-title {

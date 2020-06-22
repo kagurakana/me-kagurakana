@@ -67,7 +67,7 @@
     </div>
     <!-- BANGUMI -->
     <div class="section bangumi">
-      <div class="dis-f flex-col align-center">
+      <div class="dis-f flex-col bangumi-container fill-height justify-between align-center">
         <h1 v-show="bangumi.titleShow" class="bangumi-title">追番列表。</h1>
         <transition enter-active-class="animated slideInUp">
           <div v-show="bangumi.contentShow" class="bangumi-wrapper dis-f f-wrap justify-around">
@@ -125,11 +125,12 @@ export default {
         });
       });
       // 手动触发resize事件。
-      this.$nextTick(() => {
+
+      setTimeout(() => {
         let resizeEvent = document.createEvent("UIEvent");
         resizeEvent.initEvent("resize");
         window.dispatchEvent(resizeEvent);
-      });
+      }, 100);
     });
 
     this.getBangumi(this.bangumiPage++);
@@ -149,6 +150,7 @@ export default {
       sectionsColor: ["#f2f2f2", "#E3F2FD", "#7BAABE", "whitesmoke", "#ccddff"],
       fixedElements: "",
       scrollOverflow: true,
+      useTransform: true,
       afterLoad: (before, after) => {
         if (after.anchor === "me") {
           new Promise((resolve, reject) => {
@@ -209,7 +211,8 @@ export default {
             }, 500);
           })
             .then(() => {
-              this.bangumi.titleShow = true;
+              this.bangumi.contentShow = true;
+
               return new Promise((resolve, reject) => {
                 setTimeout(() => {
                   resolve();
@@ -217,7 +220,7 @@ export default {
               });
             })
             .then(() => {
-              this.bangumi.contentShow = true;
+              this.bangumi.titleShow = true;
               $(".bangumi-title-line").css({
                 left: "0",
                 width: "100%",
@@ -295,6 +298,11 @@ export default {
             desc: bangumi.evaluate
           });
         });
+        setTimeout(() => {
+          let resizeEvent = document.createEvent("UIEvent");
+          resizeEvent.initEvent("resize");
+          window.dispatchEvent(resizeEvent);
+        }, 100);
         console.log(this.bangumiset[0]);
       });
     }
@@ -398,7 +406,10 @@ export default {
 }
 .section.bangumi {
   position: relative;
-  .bangumi-wrapper{
+  .bangumi-container {
+    padding: 5px;
+  }
+  .bangumi-wrapper {
     min-height: 80vh;
   }
   button {

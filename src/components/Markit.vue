@@ -20,7 +20,7 @@
 
 <script>
 import { MARKED_TEXT } from "/src/config.js";
-// import hljsMixin from "/src/mixin/hljsMixin.js";
+import hljsMixin from "/src/mixin/hljsMixin.js";
 export default {
   name: "Markit",
   props: {
@@ -35,7 +35,7 @@ export default {
       defaultText: MARKED_TEXT,
     };
   },
-  // mixins: [hljsMixin],
+  mixins: [hljsMixin],
 };
 </script>
 

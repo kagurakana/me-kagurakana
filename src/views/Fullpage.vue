@@ -152,7 +152,7 @@
             使用节流（500ms）
           </label>
         </div>
-        <!-- <Markit :isTrottled="isTrottled"></Markit> -->
+        <Markit :isTrottled="isTrottled"></Markit>
       </div>
     </div>
     <div class="section contact text-center">

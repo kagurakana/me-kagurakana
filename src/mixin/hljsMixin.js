@@ -8,7 +8,7 @@ export default {
   data() {
     return {
       content: "",
-      throttleGetVal: _.throttle((this.getVal, 500))
+      throttleGetVal: _.throttle(this.getVal, 500)
     }
   },
   computed: {

@@ -23,6 +23,8 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/css/mixin.scss";
 ::v-deep.marked-article {
+  max-height: 100vh;
+  overflow-y: scroll;
   @include blog;
 }
 </style>

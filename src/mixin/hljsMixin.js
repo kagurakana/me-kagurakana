@@ -1,13 +1,14 @@
 import marked from "marked";
 import hljs from "highlight.js";
 // import {filterXSS} from 'xss'
-
+import _ from 'lodash';
 import('highlight.js/styles/solarized-light.css');
 
 export default {
   data() {
     return {
       content: "",
+      debouncedGetVal: _.debounce(this.getVal, 1000)
     }
   },
   computed: {
@@ -31,6 +32,11 @@ export default {
       }
     });
     hljs.initHighlightingOnLoad();
+  },
+  methods: {
+    getVal(e) {
+      this.content = e.target.value
+    }
   },
 
 }

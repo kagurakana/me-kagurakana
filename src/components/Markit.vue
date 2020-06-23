@@ -1,11 +1,11 @@
 <template>
-  <div class="dis-f justify-around align-center">
+  <div class="dis-f justify-around">
     <div class="flex-1">
       <textarea
-        cols="30"
+        cols="50"
         class="marked-input"
-        rows="100"
-        v-model="content"
+        rows="40"
+        @input="debouncedGetVal"
       ></textarea>
     </div>
     <div class="flex-1">
@@ -45,5 +45,4 @@ export default {
   overflow-y: scroll;
   @include blog;
 }
-
 </style>

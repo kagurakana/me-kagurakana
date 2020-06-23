@@ -8,12 +8,14 @@ export default {
   data() {
     return {
       content: "",
-      throttleGetVal: this.isTrottled ? _.throttle(this.getVal, 500) : this.getVal
     }
   },
   computed: {
     compiledMarkdown() {
       return marked(this.content)
+    },
+    throttleGetVal() {
+      return this.isTrottled ? _.throttle(this.getVal, 500) : this.getVal
     }
   },
   mounted() {

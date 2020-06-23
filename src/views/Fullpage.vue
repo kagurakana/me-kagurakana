@@ -147,8 +147,9 @@
         <div>
           <h1>markdown widget</h1>
           <h3>markdown解析</h3>
+          <label><input type="checkbox" v-model="isTrottled" /> 使用节流（500ms）</label>
         </div>
-        <Markit></Markit>
+        <Markit :isTrottled="isTrottled"></Markit>
       </div>
     </div>
     <div class="section contact text-center">
@@ -402,6 +403,7 @@ export default {
       blogListAll: [],
       blogShow: [],
       blogPage: 1,
+      isTrottled: false, //markdown 节流
     };
   },
   computed: {

@@ -8,7 +8,7 @@ export default {
   data() {
     return {
       content: "",
-      throttleGetVal: _.throttle(this.getVal, 500)
+      throttleGetVal: this.isTrottled ? _.throttle(this.getVal, 500) : this.getVal
     }
   },
   computed: {
@@ -32,7 +32,7 @@ export default {
       }
     });
     hljs.initHighlightingOnLoad();
-  }, 
+  },
   methods: {
     getVal(e) {
       this.content = e.target.value

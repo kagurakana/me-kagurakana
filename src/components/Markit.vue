@@ -21,6 +21,9 @@
 import hljsMixin from "/src/mixin/hljsMixin.js";
 export default {
   name: "Markit",
+  props: {
+    isTrottled: Boolean,
+  },
   mixins: [hljsMixin],
 };
 </script>

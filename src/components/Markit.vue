@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import MARKED_TEXT from "/src/config.js";
+import {MARKED_TEXT} from "/src/config.js";
 import hljsMixin from "/src/mixin/hljsMixin.js";
 export default {
   name: "Markit",

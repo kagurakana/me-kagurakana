@@ -45,9 +45,5 @@ export default {
   overflow-y: scroll;
   @include blog;
 }
-/deep/ .marked-article {
-  max-height: 100vh;
-  overflow-y: scroll;
-  @include blog;
-}
+
 </style>

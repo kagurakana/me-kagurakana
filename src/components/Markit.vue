@@ -1,7 +1,12 @@
 <template>
   <div class="dis-f justify-around align-center">
     <div class="flex-1">
-      <textarea cols="30" rows="10" v-model="content"></textarea>
+      <textarea
+        cols="30"
+        class="marked-input"
+        rows="100"
+        v-model="content"
+      ></textarea>
     </div>
     <div class="flex-1">
       <article
@@ -22,7 +27,25 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/css/mixin.scss";
-::v-deep.marked-article {
+.marked-input {
+  line-height: 20px;
+  padding: 10px;
+  border: 3px solid #222222;
+  border-radius: 8px;
+  font-size: 18px;
+  transition: all 0.5s ease;
+  &:focus {
+    transition: all 0.5s ease;
+
+    border: 3px solid #6737b8;
+  }
+}
+::v-deep .marked-article {
+  max-height: 100vh;
+  overflow-y: scroll;
+  @include blog;
+}
+/deep/ .marked-article {
   max-height: 100vh;
   overflow-y: scroll;
   @include blog;

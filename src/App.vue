@@ -1,14 +1,14 @@
 <template>
-  <HelloWorld />
+  <Fullpage />
 </template>
 
 <script>
-import HelloWorld from "./views/Container.vue";
+import Fullpage from "./views/Fullpage.vue";
 
 export default {
   name: "App",
   components: {
-    HelloWorld
+    Fullpage
   }
 };
 </script>

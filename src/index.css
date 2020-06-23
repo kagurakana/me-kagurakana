@@ -38,11 +38,14 @@ a {
 .align-center {
   align-items: center;
 }
-.nowrap{
+.nowrap {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.fill-height{
+.fill-height {
   height: 100%;
+}
+.text-left {
+  text-align: left;
 }

@@ -124,28 +124,83 @@
         </button>
       </div>
     </div>
-    <div class="section">Some section</div>
+    <div class="section blog text-center">
+      <div
+        class="blog-wrapper dis-f flex-col justify-around fill-height align-center"
+      >
+        <h1>最近文章。</h1>
+        <div class="dis-f justify-around f-wrap align-center">
+          <Blog
+            width="480px"
+            height="600px"
+            v-for="(item, index) in blogShow"
+            :blog="item"
+            :key="index"
+            :blogShow="blog.show"
+          ></Blog>
+        </div>
+      </div>
+    </div>
+    <div class="section markit text-center">
+      <Markit></Markit>
+    </div>
+    <div class="section contact text-center">
+      <div
+        class="blog-wrapper dis-f flex-col justify-center fill-height align-center"
+      >
+        <div class="dis-f flex-col justify-between">
+          <h1>
+            与我联系。
+            <div class="line"></div>
+          </h1>
+
+          <div class="dis-f justify-around f-wrap align-center">
+            <a href="" title="">
+              <i class="iconfont icon-github"></i>
+            </a>
+            <a href="" title="">
+              <i class="iconfont icon-github"></i>
+            </a>
+            <a href="" title="">
+              <i class="iconfont icon-github"></i>
+            </a>
+            <a href="" title="">
+              <i> </i>
+              asd
+            </a>
+            <a href="" title="">
+              <i> </i>
+              asd
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { BASE_URL } from "/src/config.js";
 import Card from "/src/components/Card.vue";
+import Blog from "/src/components/Blog.vue";
+import Markit from "/src/components/Markit.vue";
 export default {
-  name: "HelloWorld",
-  props: {
-    msg: String,
-  },
+  name: "Fullpage",
   components: {
     Card,
+    Blog,
+    Markit,
   },
   created() {
+    console.log(BASE_URL);
+    // get steam games
     $.ajax({
       method: "GET",
       url:
         "https://bird.ioliu.cn/v1?url=https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=93D0C129F98018D2DBB494BEBAB4AC5F&steamid=76561198267937561&include_appinfo=1",
-    }).done((data) => {
-      let all = data.response.games;
-      let games = data.response.games.slice(0, 10);
+    }).done((res) => {
+      let all = res.response.games;
+      let games = res.response.games.slice(0, 10);
       all.forEach((game) => {
         this.gamesetAll.push({
           title: game.name,
@@ -155,7 +210,6 @@ export default {
       });
       this.gameset = this.gamesetAll.slice(0, 10);
       // 手动触发resize事件。
-      this.getBangumi(this.bangumiPage++);
       setTimeout(() => {
         let resizeEvent = document.createEvent("UIEvent");
         resizeEvent.initEvent("resize");
@@ -163,7 +217,17 @@ export default {
       }, 100);
     });
 
-    // this.getBangumi(this.bangumiPage++);
+    this.getBangumi(this.bangumiPage++);
+    // get bloglist
+    $.ajax({
+      method: "GET",
+      url: `${BASE_URL}/api/blog/getbloglist`,
+    }).done((res) => {
+      console.log(res);
+      this.blogListAll = res.data;
+      this.blogShow = this.blogListAll.slice(0, 2);
+      console.log(this.blogShow);
+    });
     this.C_WIDTH = document.body.offsetWidth;
     window.onresize = () => {
       this.C_WIDTH = document.body.offsetWidth;
@@ -174,8 +238,15 @@ export default {
       navigation: true,
       navigationPosition: "right",
       menu: "#menu", //绑定菜单，设定的相关属性与anchors的值对应后，菜单可以控制滚动，默认为false。
-      anchors: ["me", "work", "bangumi", "game", "blog"], //anchors定义锚链接，默认为[]
-      sectionsColor: ["#f2f2f2", "#E3F2FD", "#7BAABE", "whitesmoke", "#ccddff"],
+      anchors: ["me", "work", "bangumi", "game", "blog", "markit", "contact"], //anchors定义锚链接，默认为[]
+      sectionsColor: [
+        "#f2f2f2",
+        "#E3F2FD",
+        "#7BAABE",
+        "whitesmoke",
+        "#7BAABE",
+        "#f2f2f2",
+      ],
       fixedElements: "",
       scrollOverflow: true,
       useTransform: true,
@@ -239,9 +310,7 @@ export default {
         }
         if (after.anchor === "bangumi") {
           new Promise((resolve, reject) => {
-            setTimeout(() => {
-              resolve();
-            }, 500);
+            resolve();
           })
             .then(() => {
               this.bangumi.contentShow = true;
@@ -268,6 +337,9 @@ export default {
                 this.calcSize();
               });
             });
+        }
+        if (after.anchor === "blog") {
+          this.blog.show = true;
         }
       },
     });
@@ -310,12 +382,18 @@ export default {
             "使用grid和flex布局，开发滚动轮播图，边框线设置为1px，还原小米官网。",
         },
       ],
-      gamesetAll: [],
-      gameset: [],
+      gamesetAll: [], //所有的gameList
+      gameset: [], //展示的game
       gamePage: 1,
-      bangumiset: [],
+      bangumiset: [], //展示的bangumi
       bangumiPage: 1,
-      bangumiCount: 0,
+      bangumiCount: 0, //total bangumi
+      blog: {
+        show: false,
+      },
+      blogListAll: [],
+      blogShow: [],
+      blogPage: 1,
     };
   },
   computed: {
@@ -331,28 +409,21 @@ export default {
     getBangumi(page) {
       $.ajax({
         method: "GET",
-        url: `https://www.kagurakana.xyz/api/out/bangumi?pn=${page}&sn=15&type=1&follow_status=0&vmid=14076737`,
-      }).done((data) => {
-        console.log(data);
-        this.bangumiCount = data.data.total;
-        let bangumiList = data.data.list;
+        url: `${BASE_URL}/api/out/bangumi?pn=${page}&sn=15&type=1&follow_status=0&vmid=14076737`,
+      }).done((res) => {
+        this.bangumiCount = res.data.total;
+        let bangumiList = res.data.list;
         bangumiList.forEach((bangumi) => {
           let link = bangumi.cover.match(/http:\/\/(.*)/)[1];
           this.bangumiset.push({
             title: bangumi.title,
-            img: `https://www.kagurakana.xyz/api/out/${link}`,
+            img: `${BASE_URL}/api/out/${link}`,
             desc: bangumi.evaluate,
           });
         });
         setTimeout(() => {
-          let resizeEvent = document.createEvent("UIEvent");
-          resizeEvent.initEvent("resize");
-          window.dispatchEvent(resizeEvent);
-          let loadEvent = document.createEvent("event");
-          loadEvent.initEvent("load");
-          window.dispatchEvent(loadEvent);
+          this.calcSize();
         }, 100);
-        console.log(this.bangumiset[0]);
       });
     },
     loadMoreGame(page) {
@@ -501,6 +572,15 @@ export default {
       transition: all 0.2s ease;
       transform: translate(0, 2px);
     }
+  }
+}
+.section.blog {
+  background: #f2f2f2;
+}
+.section.contact {
+  i {
+    margin: 15px;
+    font-size: 26px;
   }
 }
 @media (max-width: 950px) {

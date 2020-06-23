@@ -1,20 +1,26 @@
 <template>
-  <a class="work-link" :href="item.link" :style="{'width':width,'height':height}">
+  <a
+    class="work-link"
+    :href="item.link"
+    :title="item.title"
+    :style="{ width: width, height: height }"
+  >
     <div class="work-card dis-f flex-col">
-      <div class="img-wrapper" :style="{width:width}">
+      <div class="img-wrapper" :style="{ width: width }">
         <div
           class="work-img"
           :style="{
-                   background:`url('${item.img}') center/cover no-repeat`,
-                   'width':width,'height':height
-                   }"
+            background: `url('${item.img}') center/cover no-repeat`,
+            width: width,
+            height: height,
+          }"
         ></div>
         <div class="fade-text dis-f justify-center align-center">
-          <div>{{item.desc}}</div>
+          <div>{{ item.desc }}</div>
         </div>
       </div>
       <h1 class="dis-f flex-1 align-center justify-center nowrap">
-        <div class="nowrap">{{item.title}}</div>
+        <div class="nowrap">{{ item.title }}</div>
       </h1>
     </div>
   </a>
@@ -25,17 +31,17 @@ export default {
   name: "Card",
   props: {
     item: {
-      default: {}
+      default: {},
     },
     width: "",
     height: {
-      default: "430px"
-    }
-  }
+      default: "430px",
+    },
+  },
 };
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .work-card {
   height: 100%;
 }
@@ -92,6 +98,9 @@ export default {
     }
     top: -15px;
     box-shadow: 0 0 30px 15px rgba(0, 0, 0, 0.3);
+  }
+  h1{
+    text-shadow: 0px 0px 5px rgba(22,22,22,.4);
   }
 }
 </style>

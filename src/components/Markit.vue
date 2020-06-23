@@ -5,7 +5,7 @@
         cols="50"
         class="marked-input"
         rows="40"
-        @input="debouncedGetVal"
+        @input="throttleGetVal"
       ></textarea>
     </div>
     <div class="flex-1">

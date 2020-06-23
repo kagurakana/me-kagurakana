@@ -8,7 +8,7 @@ export default {
   data() {
     return {
       content: "",
-      debouncedGetVal: _.debounce(this.getVal, 1000)
+      throttleGetVal: _.throttle((this.getVal, 500))
     }
   },
   computed: {

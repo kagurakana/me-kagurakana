@@ -141,8 +141,15 @@
         </div>
       </div>
     </div>
+    <!-- markdown -->
     <div class="section markit text-center">
-      <Markit></Markit>
+      <div class="dis-f flex-col justify-around">
+        <div>
+          <h1>markdown widget</h1>
+          <h3>markdown解析</h3>
+        </div>
+        <Markit></Markit>
+      </div>
     </div>
     <div class="section contact text-center">
       <div

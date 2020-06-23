@@ -32,7 +32,7 @@ export default {
       }
     });
     hljs.initHighlightingOnLoad();
-  },
+  }, 
   methods: {
     getVal(e) {
       this.content = e.target.value

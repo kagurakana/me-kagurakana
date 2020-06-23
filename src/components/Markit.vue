@@ -22,7 +22,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/css/mixin.scss";
-.marked-article {
+::v-deep.marked-article {
   @include blog;
 }
 </style>

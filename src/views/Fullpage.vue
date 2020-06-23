@@ -186,7 +186,9 @@
             <div class="dis-f justify-center circle circle-2 align-center">
               <div class="dis-f justify-center circle circle-3 align-center">
                 <div class="dis-f justify-center circle circle-4 align-center">
-                  <div class="dis-f justify-center circle circle-5 align-center">
+                  <div
+                    class="dis-f justify-center circle circle-5 align-center"
+                  >
                     <div
                       class="dis-f justify-center circle circle-6 align-center"
                     ></div>
@@ -272,6 +274,7 @@ export default {
       fixedElements: "",
       scrollOverflow: true,
       useTransform: true,
+      normalScrollElements: ".marked-input, .marked-article",
       scrollOverflowOptions: {
         useTransform: true,
         useTransition: true,
@@ -674,7 +677,6 @@ export default {
       width: 100vw;
       height: 100vh;
       .circle {
-
         border: 3px solid transparent;
         border-radius: 50%;
       }
@@ -690,40 +692,35 @@ export default {
         height: 90vh;
         z-index: 2;
         border-left: 3px solid #000;
-                animation: rotate 25s infinite linear;
-
+        animation: rotate 25s infinite linear;
       }
       .circle-3 {
         width: 82vh;
         height: 82vh;
         z-index: 2;
         border-top: 3px solid #000;
-                animation: rotate 27s infinite linear;
-
+        animation: rotate 27s infinite linear;
       }
       .circle-4 {
         width: 74vh;
         height: 74vh;
         z-index: 2;
         border-bottom: 3px solid #000;
-              animation: rotate 30s infinite linear;
-
+        animation: rotate 30s infinite linear;
       }
       .circle-5 {
         width: 66vh;
         height: 66vh;
         z-index: 2;
         border-right: 3px solid #000;
-                animation: rotate 35s infinite linear;
-
+        animation: rotate 35s infinite linear;
       }
       .circle-6 {
         width: 60vh;
         height: 60vh;
         z-index: 2;
         border-left: 3px solid #000;
-                animation: rotate 40s infinite linear;
-
+        animation: rotate 40s infinite linear;
       }
     }
     // background-color: red;

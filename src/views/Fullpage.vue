@@ -254,6 +254,7 @@ export default {
         useTransform: true,
         useTransition: true,
         mouseWheel: true,
+        normalScrollElements: ".marked-article",
       },
       afterLoad: (before, after) => {
         if (after.anchor === "me") {

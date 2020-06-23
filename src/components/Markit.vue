@@ -4,7 +4,10 @@
       <textarea cols="30" rows="10" v-model="content"></textarea>
     </div>
     <div class="flex-1">
-      <article class="fill-height" v-html="compiledMarkdown"></article>
+      <article
+        class="fill-height text-left marked-article"
+        v-html="compiledMarkdown"
+      ></article>
     </div>
   </div>
 </template>
@@ -17,4 +20,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "../assets/css/mixin.scss";
+.marked-article {
+  @include blog;
+}
+</style>

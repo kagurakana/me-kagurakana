@@ -28,7 +28,7 @@ export default {
   },
   mounted() {
     // 首次渲染
-    this.content = defaultText;
+    this.content = this.defaultText;
   },
   data() {
     return {

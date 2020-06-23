@@ -1,8 +1,7 @@
 
-const BASE_URL = "https://www.kagurakana.xyz"
+const BASE_URL = "https://www.kagurakana.xyz";
 // const BASE_URL = "http://localhost:3000"
-const MARKED_TEXT = `
-# markdown widget
+const MARKED_TEXT = `# markdown widget
 
 > jquery-fullpage禁用了鼠标拖动选择,使用ctrl+A选择全部或使用shift进行文本选择。
 
@@ -21,7 +20,8 @@ function(a, b) {
 |  ----  | ----  | ----  | ----  |
 | 单元格  | 单元格 | 单元格 | 单元格 |
 | 单元格  | 单元格 | | 单元格 | | 单元格 |
-`
+`;
+
 export {
   BASE_URL,
   MARKED_TEXT

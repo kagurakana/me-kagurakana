@@ -147,39 +147,53 @@
         <div>
           <h1>markdown widget</h1>
           <h3>markdown解析</h3>
-          <label><input type="checkbox" v-model="isTrottled" /> 使用节流（500ms）</label>
+          <label>
+            <input type="checkbox" v-model="isTrottled" />
+            使用节流（500ms）
+          </label>
         </div>
-        <Markit :isTrottled="isTrottled"></Markit>
+        <!-- <Markit :isTrottled="isTrottled"></Markit> -->
       </div>
     </div>
     <div class="section contact text-center">
       <div
-        class="blog-wrapper dis-f flex-col justify-center fill-height align-center"
+        class="contact-wrapper dis-f flex-col justify-center fill-height align-center"
       >
-        <div class="dis-f flex-col justify-between">
+        <!-- content -->
+        <div class="dis-f flex-col contact justify-center contact-content">
           <h1>
             与我联系。
             <div class="line"></div>
           </h1>
 
-          <div class="dis-f justify-around f-wrap align-center">
-            <a href="" title="">
-              <i class="iconfont icon-github"></i>
-            </a>
-            <a href="" title="">
-              <i class="iconfont icon-github"></i>
-            </a>
-            <a href="" title="">
-              <i class="iconfont icon-github"></i>
-            </a>
-            <a href="" title="">
-              <i> </i>
-              asd
-            </a>
-            <a href="" title="">
-              <i> </i>
-              asd
-            </a>
+          <div class="icon-group">
+            <transition-group enter-active-class="animated fadeInUp">
+              <a
+                v-for="(icon, index) in contact.iconset"
+                :key="index"
+                :href="icon.link"
+                target="_blank"
+                :title="icon.title"
+                v-show="icon.iconShow"
+              >
+                <i :class="icon.class"></i>
+              </a>
+            </transition-group>
+          </div>
+        </div>
+        <div class="circle-wrapper dis-f justify-center align-center">
+          <div class="dis-f justify-center circle circle-1 align-center">
+            <div class="dis-f justify-center circle circle-2 align-center">
+              <div class="dis-f justify-center circle circle-3 align-center">
+                <div class="dis-f justify-center circle circle-4 align-center">
+                  <div class="dis-f justify-center circle circle-5 align-center">
+                    <div
+                      class="dis-f justify-center circle circle-6 align-center"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -262,7 +276,6 @@ export default {
         useTransform: true,
         useTransition: true,
         mouseWheel: true,
-        normalScrollElements: ".marked-article",
       },
       afterLoad: (before, after) => {
         if (after.anchor === "me") {
@@ -350,6 +363,26 @@ export default {
         if (after.anchor === "blog") {
           this.blog.show = true;
         }
+        if (after.anchor === "contact") {
+          new Promise((resolve, reject) => {
+            resolve();
+          })
+            .then(() => {
+              this.contact.title = true;
+              return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  resolve();
+                }, 500);
+              });
+            })
+            .then(() => {
+              this.contact.iconset.forEach((icon, index) => {
+                setTimeout(() => {
+                  icon.iconShow = true;
+                }, 200 * index);
+              });
+            });
+        }
       },
     });
   },
@@ -369,6 +402,42 @@ export default {
         titleShow: false,
         contentShow: false,
         buttonShow: false,
+      },
+      contact: {
+        titleShow: false,
+        iconset: [
+          {
+            class: "iconfont icon-github",
+            title: "github",
+            link: "https://github/kaugurakana/",
+            iconShow: false,
+          },
+          {
+            class: "iconfont icon-blog",
+            title: "blog",
+            link: "https://www.kaugurakana.xyz/",
+            iconShow: false,
+          },
+          {
+            class: "iconfont icon-email",
+            title: "email",
+            link: "mailto:1278820830@qq.com",
+            iconShow: false,
+          },
+          {
+            class: "iconfont  icon-qq",
+            title: "qq",
+            link: "http://wpa.qq.com/msgrd?v=3&uin=1278820830&site=qq&menu=yes",
+            iconShow: false,
+          },
+          {
+            class: "iconfont icon-steam",
+            title: "steam",
+            link: "https://steamcommunity.com/id/kagura_kana/",
+            iconShow: false,
+          },
+        ],
+        iconsShow: [false, false, false, false, false],
       },
       workset: [
         {
@@ -419,7 +488,7 @@ export default {
     getBangumi(page) {
       $.ajax({
         method: "GET",
-        url: `${BASE_URL}/api/out/bangumi?pn=${page}&sn=15&type=1&follow_status=0&vmid=14076737`,
+        url: `${BASE_URL}/api/out/bangumi?pn=${page}&sn=10&type=1&follow_status=0&vmid=14076737`,
       }).done((res) => {
         this.bangumiCount = res.data.total;
         let bangumiList = res.data.list;
@@ -588,9 +657,96 @@ export default {
   background: #f2f2f2;
 }
 .section.contact {
-  i {
+  .contact-wrapper {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    .contact-content {
+      width: 350px;
+      position: absolute;
+      left: 50%;
+      right: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .circle-wrapper {
+      z-index: -1;
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      .circle {
+
+        border: 3px solid transparent;
+        border-radius: 50%;
+      }
+      .circle-1 {
+        width: 98vh;
+        height: 98vh;
+        z-index: 2;
+        border-right: 3px solid #000;
+        animation: rotate 20s infinite linear;
+      }
+      .circle-2 {
+        width: 90vh;
+        height: 90vh;
+        z-index: 2;
+        border-left: 3px solid #000;
+                animation: rotate 25s infinite linear;
+
+      }
+      .circle-3 {
+        width: 82vh;
+        height: 82vh;
+        z-index: 2;
+        border-top: 3px solid #000;
+                animation: rotate 27s infinite linear;
+
+      }
+      .circle-4 {
+        width: 74vh;
+        height: 74vh;
+        z-index: 2;
+        border-bottom: 3px solid #000;
+              animation: rotate 30s infinite linear;
+
+      }
+      .circle-5 {
+        width: 66vh;
+        height: 66vh;
+        z-index: 2;
+        border-right: 3px solid #000;
+                animation: rotate 35s infinite linear;
+
+      }
+      .circle-6 {
+        width: 60vh;
+        height: 60vh;
+        z-index: 2;
+        border-left: 3px solid #000;
+                animation: rotate 40s infinite linear;
+
+      }
+    }
+    // background-color: red;
+  }
+  .icon-group {
+    text-align: left;
     margin: 15px;
-    font-size: 26px;
+    align-self: flex-start;
+    // width: ;
+    i {
+      padding: 0px;
+      margin: 15px;
+      transition: all 0.5s ease;
+      font-size: 26px;
+      border-radius: 50%;
+      &:hover {
+        padding: 8px;
+        transition: all 0.5s ease;
+        border-radius: 50%;
+        background-color: #222;
+        color: #efefef;
+      }
+    }
   }
 }
 @media (max-width: 950px) {
@@ -601,6 +757,14 @@ export default {
 @media (max-width: 600px) {
   .me-title {
     font-size: 46px !important;
+  }
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>

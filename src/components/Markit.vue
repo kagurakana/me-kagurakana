@@ -19,19 +19,23 @@
 </template>
 
 <script>
-import {MARKED_TEXT} from "/src/config.js";
-import hljsMixin from "/src/mixin/hljsMixin.js";
+import { MARKED_TEXT } from "/src/config.js";
+// import hljsMixin from "/src/mixin/hljsMixin.js";
 export default {
   name: "Markit",
   props: {
     isTrottled: Boolean,
   },
+  mounted() {
+    // 首次渲染
+    this.content = defaultText;
+  },
   data() {
     return {
-      defaultText:MARKED_TEXT,
-    }
+      defaultText: MARKED_TEXT,
+    };
   },
-  mixins: [hljsMixin],
+  // mixins: [hljsMixin],
 };
 </script>
 

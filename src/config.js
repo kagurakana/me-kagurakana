@@ -1,7 +1,7 @@
 
 const BASE_URL = "https://www.kagurakana.xyz";
 // const BASE_URL = "http://localhost:3000"
-const MARKED_TEXT = `# markdown widget
+let MARKED_TEXT = `# markdown widget
 
 > jquery-fullpage禁用了鼠标拖动选择,使用ctrl+A选择全部或使用shift进行文本选择。
 

@@ -4,6 +4,7 @@
       <textarea
         cols="50"
         class="marked-input"
+        v-model="defaultText"
         rows="40"
         @input="throttleGetVal"
       ></textarea>
@@ -18,11 +19,17 @@
 </template>
 
 <script>
+import MARKED_TEXT from "/src/config.js";
 import hljsMixin from "/src/mixin/hljsMixin.js";
 export default {
   name: "Markit",
   props: {
     isTrottled: Boolean,
+  },
+  data() {
+    return {
+      defaultText:MARKED_TEXT,
+    }
   },
   mixins: [hljsMixin],
 };
@@ -43,7 +50,7 @@ export default {
     border: 3px solid #6737b8;
   }
 }
-::v-deep .marked-article {
+::v-deep(.marked-article) {
   max-height: 100vh;
   overflow-y: scroll;
   @include blog;

@@ -90,7 +90,7 @@
           <div
             v-show="bangumi.contentShow"
             class="bangumi-wrapper dis-f f-wrap justify-around"
-            ref="bangumiWrapper"
+            @wheel="emitScroll('.bangumi-wrapper', 'work', 'game', 5, $event)"
           >
             <Card
               width="300px"
@@ -101,7 +101,7 @@
             ></Card>
           </div>
         </transition>
-        <button v-show="bangumi.buttonShow" @click="getBangumi(bangumiPage++)">
+        <button @click="getBangumi(bangumiPage++)">
           加载更多[一共{{ bangumiCount }}个] {{ bangumiLoadText }}
         </button>
       </div>
@@ -111,7 +111,11 @@
       <div class="bangumi-title-line"></div>
       <div class="dis-f flex-col align-center justify-between">
         <h1>我正在玩。</h1>
-        <div class="game-wrapper dis-f f-wrap justify-center" ref="gameWrapper">
+        <div
+          class="game-wrapper dis-f f-wrap justify-center"
+          @wheel="emitScroll('.game-wrapper', 'bangumi', 'blog', 5, $event)"
+          ref="gameWrapper"
+        >
           <Card
             v-for="(item, index) in gameset"
             height="200px"
@@ -153,7 +157,7 @@
             使用节流（500ms）
           </label>
         </div>
-        <!-- <Markit :isTrottled="isTrottled"></Markit> -->
+        <Markit :isTrottled="isTrottled"></Markit>
       </div>
     </div>
     <div class="section contact text-center">
@@ -243,7 +247,6 @@ export default {
       }, 100);
     });
 
-    this.getBangumi(this.bangumiPage++);
     // get bloglist
     $.ajax({
       method: "GET",
@@ -262,6 +265,7 @@ export default {
   mounted() {
     console.log("Vue mounted");
     console.log("fullpage.js inited");
+    this.getBangumi(this.bangumiPage++);
     try {
       new fullpage("#fullpage", {
         navigation: true,
@@ -278,7 +282,8 @@ export default {
         ],
         // scrollOverflow: true,
         useTransform: true,
-        normalScrollElements: ".game-wrapper, .marked-input, .marked-article",
+        normalScrollElements:
+          ".game-wrapper, .marked-input, .marked-article, .bangumi-wrapper",
         // scrollOverflowOptions: {
         //   useTransform: true,
         //   useTransition: true,
@@ -361,7 +366,7 @@ export default {
                     resolve();
                   }, 1100);
                 }).then(() => {
-                  this.bangumi.buttonShow = true;
+                  // this.bangumi.buttonShow = true;
                   //TODO
                   this.calcSize();
                 });
@@ -409,7 +414,6 @@ export default {
       bangumi: {
         titleShow: false,
         contentShow: false,
-        buttonShow: false,
       },
       contact: {
         titleShow: false,
@@ -483,6 +487,8 @@ export default {
       blogShow: [],
       blogPage: 1,
       isTrottled: false, //markdown 节流
+
+      scrollQueue: [], //长度为4 的队列 保存scrollTop，滚动触发上下
     };
   },
   computed: {
@@ -511,17 +517,17 @@ export default {
             link: bangumi.url,
           });
         });
-        this.bangumiset.length === this.bangumiCount &&
-          this.bangumiLoadText === "没有更多了。。。";
+        this.bangumiCount === 0 && this.bangumiLoadText === "没有更多了。。。";
         setTimeout(() => {
           this.calcSize();
         }, 100);
-        setTimeout(() => {
-          this.$refs.bangumiWrapper.scrollBy({
-            top: 1000,
-            behavior: "smooth",
-          });
-        }, 500);
+        this.bangumiCount === 0 ||
+          setTimeout(() => {
+            document.querySelector(".bangumi-wrapper").scrollBy({
+              top: 1000,
+              behavior: "smooth",
+            });
+          }, 500);
       });
     },
     loadMoreGame(page) {
@@ -544,6 +550,28 @@ export default {
       let loadEvent = document.createEvent("event");
       loadEvent.initEvent("load");
       window.dispatchEvent(loadEvent);
+    },
+    emitScroll(nodeStr, prevTarget, nextTarget, queueLength = 5, event) {
+      let node = document.querySelector(nodeStr);
+      let equalArr = [];
+      this.scrollQueue.length === queueLength && this.scrollQueue.shift();
+      this.scrollQueue.push(node.scrollTop);
+      console.log(this.scrollQueue);
+      equalArr = this.scrollQueue.filter((oldScrollTop) => {
+        return oldScrollTop === node.scrollTop;
+      });
+
+      if (
+        equalArr.length === this.scrollQueue.length &&
+        this.scrollQueue.length === queueLength
+      ) {
+        this.scrollQueue = [];
+        if (event.deltaY) {
+          location.hash = event.deltaY < 0 ? prevTarget : nextTarget;
+        } else if (event.wheelDeltaY) {
+          location.hash = event.wheelDeltaY > 0 ? prevTarget : nextTarget;
+        }
+      }
     },
   },
 };
@@ -665,7 +693,7 @@ export default {
     overflow-y: auto;
   }
   button {
-    margin: 50px;
+    margin: 20px;
     outline: none;
     cursor: pointer;
     background-color: transparent;

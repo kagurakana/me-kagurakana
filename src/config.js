@@ -1,6 +1,6 @@
 
-const BASE_URL = "https://www.kagurakana.xyz";
-// const BASE_URL = "http://localhost:3000"
+// const BASE_URL = "https://www.kagurakana.xyz";
+const BASE_URL = "http://localhost:3000"
 let MARKED_TEXT = `# markdown widget
 
 > 你可以输入markdown格式的文本。

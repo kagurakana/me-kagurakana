@@ -1,5 +1,8 @@
 @mixin btn-transparent {
-  margin: 50px;
+  margin:{
+    top: 20px;
+    bottom: 10px;
+  }
   outline: none;
   cursor: pointer;
   background-color: transparent;

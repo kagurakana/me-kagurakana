@@ -90,6 +90,7 @@
           <div
             v-show="bangumi.contentShow"
             class="bangumi-wrapper dis-f f-wrap justify-around"
+            ref="bangumiWrapper"
           >
             <Card
               width="300px"
@@ -101,7 +102,7 @@
           </div>
         </transition>
         <button v-show="bangumi.buttonShow" @click="getBangumi(bangumiPage++)">
-          加载更多[一共{{ bangumiCount }}个]
+          加载更多[一共{{ bangumiCount }}个] {{ bangumiLoadText }}
         </button>
       </div>
     </div>
@@ -110,7 +111,7 @@
       <div class="bangumi-title-line"></div>
       <div class="dis-f flex-col align-center justify-between">
         <h1>我正在玩。</h1>
-        <div class="game-wrapper dis-f f-wrap justify-center">
+        <div class="game-wrapper dis-f f-wrap justify-center" ref="gameWrapper">
           <Card
             v-for="(item, index) in gameset"
             height="200px"
@@ -120,7 +121,7 @@
           ></Card>
         </div>
         <button @click="loadMoreGame(gamePage++)">
-          加载更多
+          {{ gameLoadText }}
         </button>
       </div>
     </div>
@@ -152,7 +153,7 @@
             使用节流（500ms）
           </label>
         </div>
-        <Markit :isTrottled="isTrottled"></Markit>
+        <!-- <Markit :isTrottled="isTrottled"></Markit> -->
       </div>
     </div>
     <div class="section contact text-center">
@@ -275,9 +276,9 @@ export default {
           "#7BAABE",
           "#f2f2f2",
         ],
-        scrollOverflow: true,
+        // scrollOverflow: true,
         useTransform: true,
-        normalScrollElements: ".marked-input, .marked-article",
+        normalScrollElements: ".game-wrapper, .marked-input, .marked-article",
         // scrollOverflowOptions: {
         //   useTransform: true,
         //   useTransition: true,
@@ -469,10 +470,12 @@ export default {
       ],
       gamesetAll: [], //所有的gameList
       gameset: [], //展示的game
+      gameLoadText: "加载更多",
       gamePage: 1,
       bangumiset: [], //展示的bangumi
       bangumiPage: 1,
       bangumiCount: 0, //total bangumi
+      bangumiLoadText: "",
       blog: {
         show: false,
       },
@@ -508,14 +511,30 @@ export default {
             link: bangumi.url,
           });
         });
+        this.bangumiset.length === this.bangumiCount &&
+          this.bangumiLoadText === "没有更多了。。。";
         setTimeout(() => {
           this.calcSize();
         }, 100);
+        setTimeout(() => {
+          this.$refs.bangumiWrapper.scrollBy({
+            top: 1000,
+            behavior: "smooth",
+          });
+        }, 500);
       });
     },
     loadMoreGame(page) {
       this.gameset.push(...this.gamesetAll.slice(page * 10, (page + 1) * 10));
       this.calcSize();
+      this.$nextTick(() => {
+        this.gameset.length === this.gamesetAll.length
+          ? (this.gameLoadText = "没有更多了。。。")
+          : this.$refs.gameWrapper.scrollBy({
+              top: 1080,
+              behavior: "smooth",
+            });
+      });
     },
     calcSize() {
       console.log("Ajax resaved data, re-calculate container's size...");
@@ -626,12 +645,14 @@ export default {
   background-image: linear-gradient(#2a475e, #1b2838);
   h1 {
     color: #f0ebf3;
+    padding: 10px;
   }
   button {
     @include btn-transparent;
   }
   .game-wrapper {
-    min-height: 80vh;
+    height: 80vh;
+    overflow-y: auto;
   }
 }
 .section.bangumi {
@@ -640,7 +661,8 @@ export default {
     padding: 5px;
   }
   .bangumi-wrapper {
-    min-height: 80vh;
+    height: 80vh;
+    overflow-y: auto;
   }
   button {
     margin: 50px;

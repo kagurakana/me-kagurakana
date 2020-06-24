@@ -277,7 +277,6 @@ export default {
         ],
         scrollOverflow: true,
         useTransform: true,
-        normalScrollElements: ".marked-input, .marked-article",
         // scrollOverflowOptions: {
         //   useTransform: true,
         //   useTransition: true,

@@ -4,6 +4,7 @@
     :href="item.link"
     :title="item.title"
     :style="{ width: width, height: height }"
+    target="_blank"
   >
     <div class="work-card dis-f flex-col">
       <div class="img-wrapper" :style="{ width: width }">

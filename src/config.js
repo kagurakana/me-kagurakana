@@ -3,7 +3,7 @@ const BASE_URL = "https://www.kagurakana.xyz";
 // const BASE_URL = "http://localhost:3000"
 let MARKED_TEXT = `# markdown widget
 
-> jquery-fullpage禁用了鼠标拖动选择,使用ctrl+A选择全部或使用shift进行文本选择。
+> 你可以输入markdown格式的文本。
 
 \`\`\`
 // code highlight
@@ -19,7 +19,9 @@ function(a, b) {
 |  表头   | 表头  |  表头   | 表头  |
 |  ----  | ----  | ----  | ----  |
 | 单元格  | 单元格 | 单元格 | 单元格 |
-| 单元格  | 单元格 | | 单元格 | | 单元格 |
+| 单元格  | 单元格 | 单元格 | 单元格 |
+
+![QQ截图20200624144845.png](https://cdn.kagurakana.xyz/QQ截图20200624144845.png)
 `;
 
 export {

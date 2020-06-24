@@ -230,6 +230,7 @@ export default {
           title: game.name,
           img: `http://media.steampowered.com/steamcommunity/public/images/apps/${game.appid}/${game.img_logo_url}.jpg`,
           desc: game.name,
+          link: "https://store.steampowered.com/app/" + game.appid,
         });
       });
       this.gameset = this.gamesetAll.slice(0, 10);
@@ -258,136 +259,139 @@ export default {
     };
   },
   mounted() {
-    new fullpage("#fullpage", {
-      navigation: true,
-      navigationPosition: "right",
-      menu: "#menu", //绑定菜单，设定的相关属性与anchors的值对应后，菜单可以控制滚动，默认为false。
-      anchors: ["me", "work", "bangumi", "game", "blog", "markit", "contact"], //anchors定义锚链接，默认为[]
-      sectionsColor: [
-        "#f2f2f2",
-        "#E3F2FD",
-        "#7BAABE",
-        "whitesmoke",
-        "#7BAABE",
-        "#f2f2f2",
-      ],
-      fixedElements: "",
-      scrollOverflow: true,
-      useTransform: true,
-      normalScrollElements: ".marked-input, .marked-article",
-      scrollOverflowOptions: {
+    console.log("Vue mounted");
+    console.log("fullpage.js inited");
+    try {
+      new fullpage("#fullpage", {
+        navigation: true,
+        navigationPosition: "right",
+        menu: "#menu", //绑定菜单，设定的相关属性与anchors的值对应后，菜单可以控制滚动，默认为false。
+        anchors: ["me", "work", "bangumi", "game", "blog", "markit", "contact"], //anchors定义锚链接，默认为[]
+        sectionsColor: [
+          "#f2f2f2",
+          "#E3F2FD",
+          "#7BAABE",
+          "whitesmoke",
+          "#7BAABE",
+          "#f2f2f2",
+        ],
+        scrollOverflow: true,
         useTransform: true,
-        useTransition: true,
-        mouseWheel: true,
-      },
-      afterLoad: (before, after) => {
-        if (after.anchor === "me") {
-          new Promise((resolve, reject) => {
-            resolve();
-          })
-            .then(() => {
-              this.me.titleShow = true;
-              return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  resolve();
-                }, 500);
-              });
-            })
-            .then(() => {
-              this.me.leftShow = true;
-              $(".me-title-line").css({
-                left: "0",
-                width: "100%",
-                transition: "all 1s ease-in-out",
-              });
-              return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  resolve();
-                }, 1000);
-              });
-            })
-            .then(() => {
-              this.me.buttonsShow = true;
-            });
-        }
-        if (after.anchor === "work") {
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
+        normalScrollElements: ".marked-input, .marked-article",
+        // scrollOverflowOptions: {
+        //   useTransform: true,
+        //   useTransition: true,
+        //   mouseWheel: true,
+        // },
+        afterLoad: (before, after) => {
+          if (after.anchor === "me") {
+            new Promise((resolve, reject) => {
               resolve();
-            }, 500);
-          })
-            .then(() => {
-              this.work.titleShow = true;
-              return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  resolve();
-                }, 500);
-              });
             })
-            .then(() => {
-              this.work.contentShow = true;
-              $(".work-title-line").css({
-                left: "0",
-                width: "100%",
-                transition: "all 1s ease-in-out",
+              .then(() => {
+                this.me.titleShow = true;
+                return new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    resolve();
+                  }, 500);
+                });
+              })
+              .then(() => {
+                this.me.leftShow = true;
+                $(".me-title-line").css({
+                  left: "0",
+                  width: "100%",
+                  transition: "all 1s ease-in-out",
+                });
+                return new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    resolve();
+                  }, 1000);
+                });
+              })
+              .then(() => {
+                this.me.buttonsShow = true;
               });
-            });
-        }
-        if (after.anchor === "bangumi") {
-          new Promise((resolve, reject) => {
-            resolve();
-          })
-            .then(() => {
-              this.bangumi.contentShow = true;
-              return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  resolve();
-                }, 500);
-              });
+          }
+          if (after.anchor === "work") {
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                resolve();
+              }, 500);
             })
-            .then(() => {
-              this.bangumi.titleShow = true;
-              $(".bangumi-title-line").css({
-                left: "0",
-                width: "100%",
-                transition: "all 1s ease-in-out",
+              .then(() => {
+                this.work.titleShow = true;
+                return new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    resolve();
+                  }, 500);
+                });
+              })
+              .then(() => {
+                this.work.contentShow = true;
+                $(".work-title-line").css({
+                  left: "0",
+                  width: "100%",
+                  transition: "all 1s ease-in-out",
+                });
               });
-              return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  resolve();
-                }, 1100);
-              }).then(() => {
-                this.bangumi.buttonShow = true;
-                //TODO
-                this.calcSize();
-              });
-            });
-        }
-        if (after.anchor === "blog") {
-          this.blog.show = true;
-        }
-        if (after.anchor === "contact") {
-          new Promise((resolve, reject) => {
-            resolve();
-          })
-            .then(() => {
-              this.contact.title = true;
-              return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  resolve();
-                }, 500);
-              });
+          }
+          if (after.anchor === "bangumi") {
+            new Promise((resolve, reject) => {
+              resolve();
             })
-            .then(() => {
-              this.contact.iconset.forEach((icon, index) => {
-                setTimeout(() => {
-                  icon.iconShow = true;
-                }, 200 * index);
+              .then(() => {
+                this.bangumi.contentShow = true;
+                return new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    resolve();
+                  }, 500);
+                });
+              })
+              .then(() => {
+                this.bangumi.titleShow = true;
+                $(".bangumi-title-line").css({
+                  left: "0",
+                  width: "100%",
+                  transition: "all 1s ease-in-out",
+                });
+                return new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    resolve();
+                  }, 1100);
+                }).then(() => {
+                  this.bangumi.buttonShow = true;
+                  //TODO
+                  this.calcSize();
+                });
               });
-            });
-        }
-      },
-    });
+          }
+          if (after.anchor === "blog") {
+            this.blog.show = true;
+          }
+          if (after.anchor === "contact") {
+            new Promise((resolve, reject) => {
+              resolve();
+            })
+              .then(() => {
+                this.contact.title = true;
+                return new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    resolve();
+                  }, 500);
+                });
+              })
+              .then(() => {
+                this.contact.iconset.forEach((icon, index) => {
+                  setTimeout(() => {
+                    icon.iconShow = true;
+                  }, 200 * index);
+                });
+              });
+          }
+        },
+      });
+    } catch (err) {}
   },
   data() {
     return {
@@ -501,6 +505,7 @@ export default {
             title: bangumi.title,
             img: `${BASE_URL}/api/out/${link}`,
             desc: bangumi.evaluate,
+            link: bangumi.url,
           });
         });
         setTimeout(() => {
@@ -513,6 +518,7 @@ export default {
       this.calcSize();
     },
     calcSize() {
+      console.log("Ajax resaved data, re-calculate container's size...");
       let resizeEvent = document.createEvent("UIEvent");
       resizeEvent.initEvent("resize");
       window.dispatchEvent(resizeEvent);

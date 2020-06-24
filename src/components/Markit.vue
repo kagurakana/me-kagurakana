@@ -2,7 +2,7 @@
   <div class="dis-f justify-around">
     <div class="flex-1">
       <textarea
-        cols="50"
+        cols="40"
         class="marked-input"
         v-model="defaultText"
         rows="40"

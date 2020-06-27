@@ -421,13 +421,13 @@ export default {
           {
             class: "iconfont icon-github",
             title: "github",
-            link: "https://github/kaugurakana/",
+            link: "https://github.com/kagurakana",
             iconShow: false,
           },
           {
             class: "iconfont icon-blog",
             title: "blog",
-            link: "https://www.kaugurakana.xyz/",
+            link: "https://www.kagurakana.xyz/",
             iconShow: false,
           },
           {
